@@ -1,7 +1,7 @@
 /***************************************************************************************
   * 本程序由江协科技创建并开源共享！（HAL库自改版） 
   * 你可以随意查看、使用和修改，并应用到自己的项目之中
-  * 程序版权归江西科技所有，任何个人或组织不得将其占为己有
+  * 程序版权归江协科技所有，任何个人或组织不得将其占为己有
   * 
   * 程序名称：			NRF24L01无线通信模块驱动程序
   * 程序创建时间：		2025.6.9
@@ -19,6 +19,16 @@
 // 替换标准库头文件为HAL库头文件
 #include "stm32f1xx_hal.h"
 #include "NRF24L01_Define.h"
+
+
+#define  GPIO_CE			GPIO_PIN_8				/*By GPIOA*/
+#define  GPIO_CSN	 		GPIO_PIN_15				/*By GPIOA*/
+#define  GPIO_SCK			GPIO_PIN_3				/*By GPIOB*/
+#define  GPIO_MISO			GPIO_PIN_4				/*By GPIOB*/
+#define  GPIO_MOSI			GPIO_PIN_5				/*By GPIOB*/
+
+
+
 
 /*全局变量*********************/
 
@@ -55,7 +65,7 @@ uint8_t NRF24L01_RxPacket[NRF24L01_RX_PACKET_WIDTH];				//接收数据包
 void NRF24L01_W_CE(uint8_t BitValue)
 {
 	// HAL库：BitValue=1时输出高电平，0时输出低电平
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_0, BitValue ? GPIO_PIN_SET : GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOA, GPIO_CE, BitValue ? GPIO_PIN_SET : GPIO_PIN_RESET);
 }
 
 /**
@@ -66,7 +76,7 @@ void NRF24L01_W_CE(uint8_t BitValue)
   */
 void NRF24L01_W_CSN(uint8_t BitValue)
 {
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_1, BitValue ? GPIO_PIN_SET : GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOA, GPIO_CSN, BitValue ? GPIO_PIN_SET : GPIO_PIN_RESET);
 }
 
 /**
@@ -77,7 +87,7 @@ void NRF24L01_W_CSN(uint8_t BitValue)
   */
 void NRF24L01_W_SCK(uint8_t BitValue)
 {
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_2, BitValue ? GPIO_PIN_SET : GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOA, GPIO_SCK, BitValue ? GPIO_PIN_SET : GPIO_PIN_RESET);
 }
 
 /**
@@ -88,7 +98,7 @@ void NRF24L01_W_SCK(uint8_t BitValue)
   */
 void NRF24L01_W_MOSI(uint8_t BitValue)
 {
-	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_3, BitValue ? GPIO_PIN_SET : GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(GPIOA, GPIO_MOSI, BitValue ? GPIO_PIN_SET : GPIO_PIN_RESET);
 }
 
 /**
@@ -100,7 +110,7 @@ void NRF24L01_W_MOSI(uint8_t BitValue)
 uint8_t NRF24L01_R_MISO(void)
 {
 	// HAL库：读取引脚电平，高电平返回1，低电平返回0
-	return HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) == GPIO_PIN_SET ? 1 : 0;
+	return HAL_GPIO_ReadPin(GPIOA, GPIO_MISO) == GPIO_PIN_SET ? 1 : 0;
 }
 
 /**
