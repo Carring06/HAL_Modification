@@ -25,7 +25,7 @@ void Key_Init(void)
 {
     // 【CubeMX自动生成的代码，用户需自行添加】
     // 1. GPIOB时钟使能
-    // 2. 引脚模式初始化：PB1/PB11为上拉输入，PB13/PB15为下拉输入
+    // 2. 引脚模式初始化：PB1/P0/PA5/PA4为上拉输入
     // 此处仅保留格式，原函数调用请自行补充
 }
 
@@ -46,7 +46,7 @@ uint8_t Key_GetState(uint8_t n)
     }
     else if (n == KEY_2)
     {
-        // PB11为上拉输入，按下时为低电平
+        // PB0为上拉输入，按下时为低电平
         if (HAL_GPIO_ReadPin(GPIOB, GPIO_KEY2) == GPIO_PIN_RESET)
         {
             return KEY_PRESSED;
@@ -54,16 +54,16 @@ uint8_t Key_GetState(uint8_t n)
     }
     else if (n == KEY_3)
     {
-        // PB13为下拉输入，按下时为高电平（GPIO_PIN_SET）
-        if (HAL_GPIO_ReadPin(GPIOA, GPIO_KEY3) == GPIO_PIN_SET)
+        // PA5为上拉输入，按下时为低电平
+        if (HAL_GPIO_ReadPin(GPIOA, GPIO_KEY3) == GPIO_PIN_RESET)
         {
             return KEY_PRESSED;
         }
     }
     else if (n == KEY_4)
     {
-        // PB15为下拉输入，按下时为高电平
-        if (HAL_GPIO_ReadPin(GPIOA, GPIO_KEY4) == GPIO_PIN_SET)
+        //  PA4为上拉输入，按下时为低电平
+        if (HAL_GPIO_ReadPin(GPIOA, GPIO_KEY4) == GPIO_PIN_RESET)
         {
             return KEY_PRESSED;
         }

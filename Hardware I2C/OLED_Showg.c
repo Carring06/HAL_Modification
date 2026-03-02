@@ -1,4 +1,5 @@
- 	OLED_ShowString(0, 0, "ID:", OLED_6X8);  // 显示静态字符串
+ 	int16_t AX, AY, AZ, GX, GY, GZ; 
+	OLED_ShowString(0, 0, "ID:", OLED_6X8);  // 显示静态字符串
   	ID = MPU6050_GetID();                    // 获取MPU6050的ID号
   	OLED_ShowHexNum(32, 0, ID, 2, OLED_6X8); // OLED显示ID号
   	OLED_Update();

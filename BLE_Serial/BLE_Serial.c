@@ -4,7 +4,7 @@
 #include "usart.h"
 
 /*
-	平衡车应改成————UART2,PA2,PA3
+	平衡车应改成————USART2,PA2,PA3
 */
 
 char Serial_RxPacket[100];
@@ -20,15 +20,9 @@ static uint8_t pRxPacket = 0;// 数据包指针（和原代码逻辑一致）
 
 void BLE_Serial_Init(void)
 {
-    // 不再手动初始化USART1和GPIO，改用CubeMX生成的MX_USART1_UART_Init()
-/*
-	我认为可以不用 
-    // 仅保留NVIC和中断开启（核心逻辑）
-    HAL_NVIC_SetPriority(USART1_IRQn, 1, 1); // 抢占优先级1，子优先级1
-    HAL_NVIC_EnableIRQ(USART1_IRQn);
-*/
+
     // 开启USART1接收中断
-    HAL_UART_Receive_IT(&huart1, &RxData, 1);
+    HAL_UART_Receive_IT(&huart2, &RxData, 1);
 }
 
 /*
@@ -76,7 +70,7 @@ void BLE_Serial_Init(void)
      */
 void BLE_Serial_SendByte(uint8_t Byte)
 {
-    HAL_UART_Transmit(&huart1, &Byte, 1, HAL_MAX_DELAY);
+    HAL_UART_Transmit(&huart2, &Byte, 1, HAL_MAX_DELAY);
 }
 
 /**
@@ -84,7 +78,7 @@ void BLE_Serial_SendByte(uint8_t Byte)
  */
 void BLE_Serial_SendArray(uint8_t *Array, uint16_t Length)
 {
-    HAL_UART_Transmit(&huart1, Array, Length, HAL_MAX_DELAY);
+    HAL_UART_Transmit(&huart2, Array, Length, HAL_MAX_DELAY);
 }
 
 /**
@@ -147,14 +141,6 @@ void BLE_Serial_Printf(char *format, ...)
     BLE_Serial_SendString(String);
 }
 
-/**
- * @brief  USART1中断服务函数（HAL库标准写法）
- * @note   替代原USART1_IRQHandler，调用HAL库中断处理函数
- */
-//void USART1_IRQHandler(void)
-//{
-//    HAL_UART_IRQHandler(&huart1);
-//}
 
 /**
  * @brief  UART接收完成回调函数（处理中断接收的字节）
@@ -162,7 +148,7 @@ void BLE_Serial_Printf(char *format, ...)
  */
 void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
 {
-    if (huart->Instance == USART1)
+    if (huart->Instance == USART2)
     {
         if (RxState == 0)
         {
@@ -190,7 +176,8 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
         }
 
         // 重新开启接收中断，等待下一个字节
-        HAL_UART_Receive_IT(&huart1, &RxData, 1);
+        HAL_UART_Receive_IT(&huart2, &RxData, 1);
     }
 }
+
 

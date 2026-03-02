@@ -20,6 +20,8 @@
 #include "stm32f1xx_hal.h"
 #include "NRF24L01_Define.h"
 
+/*将CE、CSN、SCK、MOSI引脚初始化为推挽输出模式*/
+/*将MISO引脚初始化为上拉输入模式*/
 
 #define  GPIO_CE			GPIO_PIN_8				/*By GPIOA*/
 #define  GPIO_CSN	 		GPIO_PIN_15				/*By GPIOA*/
@@ -123,7 +125,7 @@ void NRF24L01_GPIO_Init(void)
 {
 	// 【CubeMX已自动生成以下代码，无需手动编写】
 	// 1. GPIOA时钟自动使能
-	// 2. PA0/PA1/PA2/PA3配置为推挽输出，PA4配置为上拉输入
+
 	
 	// 仅保留默认电平设置，与原逻辑一致
 	NRF24L01_W_CE(0);		//CE默认为0，关闭收发模式
